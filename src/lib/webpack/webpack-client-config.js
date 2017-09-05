@@ -19,6 +19,7 @@ import SWPrecacheWebpackPlugin from 'sw-precache-webpack-plugin';
 import PushManifestPlugin from './push-manifest';
 import baseConfig, { exists, readJson, helpers } from './webpack-base-config';
 import prerender from './prerender';
+import AssetsPlugin from 'assets-webpack-plugin';
 
 export default env => {
 	let { isProd, src } = helpers(env);
@@ -91,7 +92,12 @@ export default env => {
 					to: 'assets'
 				}
 			].filter(Boolean)),
-			new PushManifestPlugin()
+			new PushManifestPlugin(),
+			new AssetsPlugin({
+				path: env.dest,
+				filename: 'assets.json',
+				prettyPrint: true,
+			})
 		]),
 
 		htmlPlugin(env, src('.')),
